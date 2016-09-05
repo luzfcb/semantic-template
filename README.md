@@ -18,7 +18,6 @@ python -m venv .venv
 source .venv/bin/activate # Linux
 pip install -r requirements.txt
 python contrib/env_gen.py
-var=`python contrib/secret_gen.py`
-printf '\nSECRET_KEY='$var >> .env
+echo -e "\nSECRET_KEY='`python contrib/secret_gen.py`'" >> .env
 python manage.py test
 ```

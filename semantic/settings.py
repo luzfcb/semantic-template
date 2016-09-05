@@ -3,19 +3,21 @@ from decouple import config, Csv
 from dj_database_url import parse as dburl
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PARENT_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(PARENT_DIR)
 
-
+print(PARENT_DIR)
+print(BASE_DIR)
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
-
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=['127.0.0.1'], cast=Csv())
+INTERNAL_IPS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
@@ -27,9 +29,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # my apps
     'semantic.core',
+    'debug_toolbar',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -45,7 +48,9 @@ ROOT_URLCONF = 'semantic.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(os.path.dirname(BASE_DIR), 'semantic', 'templates'), ],
+        'DIRS': [
+            os.path.join(PARENT_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,6 +113,10 @@ USE_THOUSAND_SEPARATOR = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(PARENT_DIR, 'staticfiles_producao')
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(PARENT_DIR, 'users_mediafiles_producao')
+
 
 LOGIN_URL = '/admin/login/'
